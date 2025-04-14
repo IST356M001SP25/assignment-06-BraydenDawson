@@ -1,42 +1,56 @@
 import requests
 
-# Put your CENT Ischool IoT Portal API KEY here.
-APIKEY = "APIKEYHERE"
+APIKEY = "e5e4c70438585c82d00a060c"
 
-def get_google_place_details(google_place_id: str) -> dict:
-    pass # Implement this function
-    
+def get_google_place_details(place_id: str) -> dict:
+    url = "https://cent.ischool-iot.net/api/google/places/details"
+    headers = { 'X-API-KEY': APIKEY }
+    query = { 'place_id': place_id }
+    res = requests.get(url, headers=headers, params=query)
+    res.raise_for_status()
+    return res.json()
+
+
 def get_azure_sentiment(text: str) -> dict:
-    pass # Implement this function
+    url = "https://cent.ischool-iot.net/api/azure/sentiment"
+    headers = { 'X-API-KEY': APIKEY }
+    payload = { 'text': text }
+    res = requests.post(url, headers=headers, data=payload)
+    res.raise_for_status()
+    return res.json()
+
 
 def get_azure_key_phrase_extraction(text: str) -> dict:
-    pass # Implement this function
+    url = "https://cent.ischool-iot.net/api/azure/keyphrasextraction"
+    headers = { 'X-API-KEY': APIKEY }
+    payload = { 'text': text }
+    res = requests.post(url, headers=headers, data=payload)
+    res.raise_for_status()
+    return res.json()
+
 
 def get_azure_named_entity_recognition(text: str) -> dict:
-    pass # Implement this function
+    url = "https://cent.ischool-iot.net/api/azure/entityrecognition"
+    headers = { 'X-API-KEY': APIKEY }
+    payload = { 'text': text }
+    res = requests.post(url, headers=headers, data=payload)
+    res.raise_for_status()
+    return res.json()
 
 
-def geocode(place:str) -> dict:
-    '''
-    Given a place name, return the latitude and longitude of the place.
-    Written for example_etl.py
-    '''
-    header = { 'X-API-KEY': APIKEY }
-    params = { 'location': place }
+def geocode(location: str) -> dict:
     url = "https://cent.ischool-iot.net/api/google/geocode"
-    response = requests.get(url, headers=header, params=params)
-    response.raise_for_status()
-    return response.json()  # Return the JSON response as a dictionary
+    headers = { 'X-API-KEY': APIKEY }
+    params = { 'location': location }
+    res = requests.get(url, headers=headers, params=params)
+    res.raise_for_status()
+    return res.json()
 
 
-def get_weather(lat: float, lon: float) -> dict:
-    '''
-    Given a latitude and longitude, return the current weather at that location.
-    written for example_etl.py
-    '''
-    header = { 'X-API-KEY': APIKEY }
-    params = { 'lat': lat, 'lon': lon, 'units': 'imperial' }
+def get_weather(latitude: float, longitude: float) -> dict:
     url = "https://cent.ischool-iot.net/api/weather/current"
-    response = requests.get(url, headers=header, params=params)
-    response.raise_for_status()
-    return response.json()  # Return the JSON response as a dictionary
+    headers = { 'X-API-KEY': APIKEY }
+    params = { 'lat': latitude, 'lon': longitude, 'units': 'imperial' }
+    res = requests.get(url, headers=headers, params=params)
+    res.raise_for_status()
+    return res.json()
