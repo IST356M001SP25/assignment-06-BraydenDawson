@@ -68,3 +68,20 @@ def test_entity_exraction_step_file_in_cache():
 # Run this file with debugging
 if __name__ == "__main__":
     test_should_pass()
+
+
+    import os
+    os.makedirs("cache", exist_ok=True)
+
+    print("Running ETL pipeline...")
+
+    reviews = reviews_step(PLACE_IDS_SOURCE_FILE)
+    print(f"✅ Saved: {CACHE_REVIEWS_FILE} ({len(reviews)} rows)")
+
+    sentiment = sentiment_step(reviews)
+    print(f"✅ Saved: {CACHE_SENTIMENT_FILE} ({len(sentiment)} rows)")
+
+    entities = entity_extraction_step(sentiment)
+    print(f"✅ Saved: {CACHE_ENTITIES_FILE} ({len(entities)} rows)")
+
+    print("🎉 All files created. You can now run your tests.")

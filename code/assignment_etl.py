@@ -1,7 +1,17 @@
+import os
 import streamlit as st
 import pandas as pd
 import requests
-import json 
+import json
+
+# Fix file paths so they always point to the right location
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+CACHE_DIR = os.path.join(BASE_DIR, "cache")
+
+PLACE_IDS_SOURCE_FILE = os.path.join(CACHE_DIR, "place_ids.csv")
+CACHE_REVIEWS_FILE = os.path.join(CACHE_DIR, "reviews.csv")
+CACHE_SENTIMENT_FILE = os.path.join(CACHE_DIR, "reviews_sentiment_by_sentence.csv")
+CACHE_ENTITIES_FILE = os.path.join(CACHE_DIR, "reviews_sentiment_by_sentence_with_entities.csv")
 
 if __name__ == "__main__":
     import sys
@@ -9,11 +19,6 @@ if __name__ == "__main__":
     from apicalls import get_google_place_details, get_azure_sentiment, get_azure_named_entity_recognition
 else:
     from code.apicalls import get_google_place_details, get_azure_sentiment, get_azure_named_entity_recognition
-
-PLACE_IDS_SOURCE_FILE = "cache/place_ids.csv"
-CACHE_REVIEWS_FILE = "cache/reviews.csv"
-CACHE_SENTIMENT_FILE = "cache/reviews_sentiment_by_sentence.csv"
-CACHE_ENTITIES_FILE = "cache/reviews_sentiment_by_sentence_with_entities.csv"
 
 def reviews_step(place_ids: str | pd.DataFrame) -> pd.DataFrame:
     if isinstance(place_ids, str):
@@ -100,4 +105,17 @@ def entity_extraction_step(sentiment: str | pd.DataFrame) -> pd.DataFrame:
     return df_entities
 
 if __name__ == '__main__':
-    st.write("What do you want to debug?")
+    os.makedirs(CACHE_DIR, exist_ok=True)
+
+    print("Running ETL pipeline...")
+
+    reviews = reviews_step(PLACE_IDS_SOURCE_FILE)
+    print(f"✅ Saved: {CACHE_REVIEWS_FILE} ({len(reviews)} rows)")
+
+    sentiment = sentiment_step(reviews)
+    print(f"✅ Saved: {CACHE_SENTIMENT_FILE} ({len(sentiment)} rows)")
+
+    entities = entity_extraction_step(sentiment)
+    print(f"✅ Saved: {CACHE_ENTITIES_FILE} ({len(entities)} rows)")
+
+    print("🎉 All files created. You can now run your tests.")
