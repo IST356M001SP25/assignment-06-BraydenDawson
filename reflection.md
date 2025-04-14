@@ -1,7 +1,7 @@
 # Reflection
 
-Student Name:  name
-Sudent Email:  email
+Student Name:  Brayden Dawson
+Sudent Email:  Bcdawson@syr.edu
 
 ## Instructions
 
@@ -23,3 +23,8 @@ Examples:
 
 `--- Reflection Below This Line ---`
 
+In this assignment, I learned how to design and run a complete ETL pipeline using Python, APIs, and Pandas. I got practice using external APIs like Google Places and Azure Cognitive Services, and I learned how to handle JSON responses by normalizing nested data structures. One challenge I ran into was managing file paths — especially when working across folders like code/ and cache/. I learned how to use os.path to dynamically build reliable paths, which is a skill I can apply to future Python projects.
+
+Another area I struggled with initially was making sure the output files were formatted correctly for testing. I didn’t realize how strict the test suite would be about file locations, row counts, and column names. That showed me how important it is to align your code with the expected input/output format, especially in a testing-driven environment.
+
+Going forward, I want to get more comfortable with working across modules and packages in Python projects, especially when the structure gets more complex. I also want to practice handling errors gracefully when working with external APIs to make my scripts more robust.
